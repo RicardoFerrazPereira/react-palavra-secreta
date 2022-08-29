@@ -24,7 +24,16 @@ function App() {
 
   const [pickedWord, setPickedWord] = useState("");
   const [pickedCategory, setPickedCategory] = useState("");
-  const [letters, setLetters] = useState("");
+  const [letters, setLetters] = useState([]);
+
+  //letras advinhadas
+  const [guessedLetters, setGuessedLetters] = useState([]);
+  //letras erradas
+  const [wrogLetters, setWrongLetters] = useState([]);
+  //tentativas do usuário
+  const [guesses, setGuesses] = useState(3);
+  //pontuação
+  const [score, setScore] = useState(0);
 
   // Função para escolher a palavra e a categoria
   const pickWordAndCategory = () => {
@@ -58,8 +67,7 @@ function App() {
     // set states - preencher o estado
     setPickedWord(word);
     setPickedCategory(category);
-    setLetters(letters);
-
+    setLetters(wordLetters);
 
     setGameStage(stages[1].name);
   }
@@ -74,11 +82,21 @@ function App() {
     setGameStage(stages[0].name);
   }
 
-
   return (
     <div className="App">
       {gameStage === "start" && <StartScreen startGame={startGame} />}
-      {gameStage === "game" && <Game verifyLetter={verifyLetter} />}
+      {gameStage === "game" && (
+        <Game
+          verifyLetter={verifyLetter}
+          pickedWord={pickedWord}
+          pickedCategory={pickedCategory}
+          letters={letters}
+          guessedLetters={guessedLetters}
+          wrongLetters={wrogLetters}
+          guesses={guesses}
+          score={score}
+        />
+      )}
       {gameStage === "end" && <GameOver retry={retry} />}
 
     </div>
