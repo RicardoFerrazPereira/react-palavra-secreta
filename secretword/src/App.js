@@ -22,14 +22,28 @@ function App() {
   // iniciar os dados
   const [words] = useState(wordsList);
 
-  console.log(words);
+  // Função para iniciar o jogo
+  // mudar o stage do jogo
+  const startGame = () => {
+    setGameStage(stages[1].name);
+  }
+
+  // processar a letra que o usuário digita no input
+  const verifyLetter = () => {
+    setGameStage(stages[2].name);
+  }
+
+  // função para reiniciar o jogo
+  const retry = () => {
+    setGameStage(stages[0].name);
+  }
 
 
   return (
     <div className="App">
-      {gameStage === "start" && <StartScreen />}
-      {gameStage === "game" && <Game />}
-      {gameStage === "end" && <GameOver />}
+      {gameStage === "start" && <StartScreen startGame={startGame} />}
+      {gameStage === "game" && <Game verifyLetter={verifyLetter} />}
+      {gameStage === "end" && <GameOver retry={retry} />}
 
     </div>
   );
