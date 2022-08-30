@@ -29,7 +29,7 @@ function App() {
   //letras advinhadas
   const [guessedLetters, setGuessedLetters] = useState([]);
   //letras erradas
-  const [wrogLetters, setWrongLetters] = useState([]);
+  const [wrongLetters, setWrongLetters] = useState([]);
   //tentativas do usuário
   const [guesses, setGuesses] = useState(3);
   //pontuação
@@ -74,8 +74,29 @@ function App() {
 
   // processar a letra que o usuário digita no input
   const verifyLetter = (letter) => {
-    console.log(letter)
+    // normalizar a letra como minúscula
+    const normalizedLetter = letter.toLowerCase();
+    // validação para saber se a letra já foi utilizada
+    if (
+      guessedLetters.includes(normalizedLetter) ||
+      wrongLetters.includes(normalizedLetter)
+    ) {
+      return;
+    }
+    // incluir as letras que o usuário digita para as letras acertadas ou erradas
+    if (letters.includes(normalizedLetter)) {
+      setGuessedLetters((actualGuessedLetters) => [
+        ...actualGuessedLetters, normalizedLetter
+      ]);
+    }
+    else {
+      setWrongLetters((actualWrongLetters) => [
+        ...actualWrongLetters, normalizedLetter
+      ]);
+    }
   }
+  console.log(guessedLetters);
+  console.log(wrongLetters);
 
   // função para reiniciar o jogo
   const retry = () => {
@@ -92,7 +113,7 @@ function App() {
           pickedCategory={pickedCategory}
           letters={letters}
           guessedLetters={guessedLetters}
-          wrongLetters={wrogLetters}
+          wrongLetters={wrongLetters}
           guesses={guesses}
           score={score}
         />

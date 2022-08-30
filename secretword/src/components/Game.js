@@ -13,7 +13,6 @@ const Game = ({
 }) => {
 
   const [letter, setLetter] = useState("");
-
   //Voltar a digitar a letra n input -> usar o hook do react = useRef
   const letterInputRef = useRef(null);
 
@@ -21,7 +20,7 @@ const Game = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     verifyLetter(letter);
-    setLetter("")
+    setLetter("");
     // usar a referência e focar nesse elemento após o fim do submit -
     // vai liberar o input
     letterInputRef.current.focus();
@@ -38,7 +37,6 @@ const Game = ({
       </h3>
       <p>Você ainda tem {guesses} tentativa(s).</p>
       <div className="wordContainer">
-
         {letters.map((letter, i) =>
           guessedLetters.includes(letter) ? (
             <span key={i} className="letter">
@@ -68,13 +66,13 @@ const Game = ({
       </div>
       <div className="wrongLettersContainer">
         <p>Letras já utilizadas:</p>
-        {wrongLetters.map((letter, i) =>
-          <span key={i}>{letter}, </span>)}
-        <span>a, </span>
-        <span>b, </span>
+        {wrongLetters.map((letter, i) => (
+          <span key={i}>{letter}, </span>
+        ))}
+
       </div>
     </div>
   )
 }
 
-export default Game
+export default Game;
