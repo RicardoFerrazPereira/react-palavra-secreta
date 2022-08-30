@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import "./Game.css";
 
 const Game = ({
@@ -10,6 +11,22 @@ const Game = ({
   guesses,
   score,
 }) => {
+
+  const [letter, setLetter] = useState("");
+
+  //Voltar a digitar a letra n input -> usar o hook do react = useRef
+  const letterInputRef = useRef(null);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    verifyLetter(letter);
+    setLetter("")
+    // usar a referência e focar nesse elemento após o fim do submit -
+    // vai liberar o input
+    letterInputRef.current.focus();
+  }
+
   return (
     <div className="game">
       <p className="points">
@@ -35,12 +52,17 @@ const Game = ({
       </div>
       <div className="letterContainer">
         <p>Tente advinhar uma letra da palavra:</p>
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             name="letter"
             maxLength="1"
-            required />
+            required
+            onChange={(e) => setLetter(e.target.value)}
+            value={letter}
+            //setar a referência
+            ref={letterInputRef}
+          />
           <button>Jogar!</button>
         </form>
       </div>
