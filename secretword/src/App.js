@@ -38,7 +38,7 @@ function App() {
   const [score, setScore] = useState(0);
 
   // Função para escolher a palavra e a categoria
-  const pickWordAndCategory = () => {
+  const pickWordAndCategory = useCallback(() => {
     // escolher a categoria aleatóriamente
     const categories = Object.keys(words);
     const category =
@@ -53,11 +53,13 @@ function App() {
     console.log(word);
     // retornar como um objeto - entre {}
     return { word, category };
-  }
+  }, [words]);
 
   // Função para iniciar o jogo
   // mudar o stage do jogo
-  const startGame = () => {
+  const startGame = useCallback(() => {
+    // limpar todas as letra
+    clearLetterStates();
     // escolher a palavra e a categoria aleatóriamente
     const { word, category } = pickWordAndCategory();
     // Criar um array de letras - transformar palavra em letras
@@ -72,7 +74,7 @@ function App() {
     setLetters(wordLetters);
 
     setGameStage(stages[1].name);
-  }
+  }, [pickWordAndCategory]);
 
   // processar a letra que o usuário digita no input
   const verifyLetter = (letter) => {
@@ -106,6 +108,7 @@ function App() {
     setWrongLetters([]);
   };
 
+  // verificar se as tentativas acabaram
   useEffect(() => {
     if (guesses <= 0) {
       // reset all states - resetar o jogo zerado
@@ -114,6 +117,22 @@ function App() {
     }
 
   }, [guesses]);
+
+  //checar condição de vitória
+  useEffect(() => {
+    // array de letras unicas
+    const uniqueLetters = [...new Set(letters)]
+    // condição de vitória
+    if (guessedLetters.length === uniqueLetters.length) {
+      // adicionar pontuação (score)
+      setScore((actualScore) => actualScore += 100)
+      // reiniciar o jogo com nova palavra
+      startGame();
+    }
+
+    console.log(uniqueLetters)
+  }, [guessedLetters, letters, startGame]);
+
 
   // função para reiniciar o jogo
   const retry = () => {
